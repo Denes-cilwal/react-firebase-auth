@@ -1,20 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form} from "react-bootstrap";
-import { Button } from "react-bootstrap";
-import {Link} from "react-router-dom"
-const Signup = () => {
+import { Button, Alert } from "react-bootstrap";
+import {Link, useNavigate} from "react-router-dom"
+import { userAuth } from "../context/UserAuthContext";
 
+const Signup = () => {
+const [email, setEmail]= useState("")
+const [password, setPassword] = useState("")
+const [error, setError] = useState("");
+const {signUp} =  userAuth();
+const navigate = useNavigate();
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    try {
+      await signUp(email, password);
+      navigate("/");
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
 
     return (
         <>
             <div className="p-4 box">
                 <h2 className="mb-3">Firebase Auth Signup</h2>
-                <Form>
+                {error && <Alert variant="danger">{error}</Alert>}
+                <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Control
                             type="email"
                             placeholder="Email address"
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                     </Form.Group>
 
@@ -22,6 +40,7 @@ const Signup = () => {
                         <Form.Control
                             type="password"
                             placeholder="Password"
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                     </Form.Group>
 
