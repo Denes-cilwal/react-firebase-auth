@@ -1,7 +1,7 @@
 import React from "react";
 import { Form} from "react-bootstrap";
 import { Button } from "react-bootstrap";
-
+import {Link} from "react-router-dom"
 const Signup = () => {
 
 
@@ -33,7 +33,7 @@ const Signup = () => {
                 </Form>
             </div>
             <div className="p-4 box mt-3 text-center">
-                Already have an account?
+                Already have an account? <Link to="/">Login</Link>
             </div>
         </>
     );
