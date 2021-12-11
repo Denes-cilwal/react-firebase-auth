@@ -3,6 +3,7 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signOut,
+    GoogleAuthProvider,
     // logging in user change the auth state of system it provides us current user.
     onAuthStateChanged
 } from 'firebase/auth';
@@ -21,7 +22,13 @@ export const UserAuthContextProvider = ({ children }) => {
     function logIn(email, password) {
         return signInWithEmailAndPassword(auth, email, password);
     }
-
+    function logOut() {
+        return signOut(auth);
+      }
+      function googleSignIn() {
+        const googleAuthProvider = new GoogleAuthProvider();
+        return signInWithPopup(auth, googleAuthProvider);
+      }
     // firebase specficy particular use logged in
     // when component gets mounts either the auth state or current user will be null or some user.
     useEffect(() => {
@@ -35,7 +42,7 @@ export const UserAuthContextProvider = ({ children }) => {
     console.log(children, "acd")
     
     return (
-        <UserAuthContext.Provider value={{ user, signUp, logIn, }}>
+        <UserAuthContext.Provider value={{ user, signUp, logIn, logOut,googleSignIn}}>
             {children}
         </UserAuthContext.Provider>
     )
